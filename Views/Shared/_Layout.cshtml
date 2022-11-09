@@ -68,9 +68,28 @@
                 {
                     <a class="signInOut mr-2" asp-controller="Account" asp-action="Login"><i class="fas fa-sign-in-alt"></i> Sign In</a>
                 }
+                <button class="btn btn-outline-primary rounded-circle" data-toggle="modal" data-target="#shoppingCart"><i class="fas fa-shopping-cart"></i></button>
             </div>
         </nav>
     </header>
+    <div class="modal fade" id="shoppingCart" tabindex="-1" aria-labelledby="shoppingCartLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="shoppingCartLabel">Shopping Cart</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Products
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Checkout</button>
+      </div>
+    </div>
+  </div>
+</div>
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
