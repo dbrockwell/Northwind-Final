@@ -16,6 +16,7 @@ namespace Northwind.Controllers
             _northwindContext = db;
             _userManager = usrMgr;
         }
+        public IActionResult Order() => View();
         public IActionResult Register() => View();
         [HttpPost, ValidateAntiForgeryToken]
         public async System.Threading.Tasks.Task<IActionResult> Register(CustomerWithPassword customerWithPassword)
