@@ -27,6 +27,7 @@
             </th>
             <th scope="col" class="text-right">Price</th>
             <th scope="col" class="text-right">Stock</th>
+            <th scope="col" class="text-right"></th>
         </tr>
     </thead>
     <tbody id="product_rows" data-id="@ViewBag.id"></tbody>
@@ -45,20 +46,30 @@
                      $('#product_rows').html("");
                     for (var i = 0; i < response.length; i++){
                         var css = response[i].discontinued ? " class=\"discontinued\"" : "";
+                        var btn = "<button class=\"btn btn-outline-primary\">Add to Cart</button>"
+                        if(response[i].unitsInStock <= 0){
+                            btn = "<button type=\"button\" class=\"btn btn-outline-secondary\" disabled>Out of Stock</button>"
+                        }
                         var row = "<tr" + css + ">"
                             + "<td>" + response[i].productName + "</td>"
                             + "<td class=\"text-right\">$" + response[i].unitPrice.toFixed(2) + "</td>"
                             + "<td class=\"text-right\">" + response[i].unitsInStock + "</td>"
+                            + "<td class=\"text-right\">" + btn + "</td>"
                             + "</tr>";
+
                         $('#product_rows').append(row);
+                        
                     }
+
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     // log the error to the console
                     console.log("The following error occured: " + textStatus, errorThrown);
                 }
             });
+            
         }
+
         $('#CategoryId').on('change', function(){
             $('#product_rows').data('id', $(this).val());
             getProducts();
