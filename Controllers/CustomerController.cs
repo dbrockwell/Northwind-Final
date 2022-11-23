@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Mvc;
 using Northwind.Models;
 using System.Linq;
@@ -16,7 +17,6 @@ namespace Northwind.Controllers
             _northwindContext = db;
             _userManager = usrMgr;
         }
-        public IActionResult Order() => View();
         public IActionResult Register() => View();
         [HttpPost, ValidateAntiForgeryToken]
         public async System.Threading.Tasks.Task<IActionResult> Register(CustomerWithPassword customerWithPassword)
@@ -83,6 +83,28 @@ namespace Northwind.Controllers
             {
                 ModelState.AddModelError("", error.Description);
             }
+        }
+
+        [Authorize(Roles = "northwind-customer")]
+        public IActionResult Order() => View();
+
+        [Authorize(Roles = "northwind-customer")]
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult Order(Order order)
+        {
+            if (ModelState.IsValid)
+            {
+                order.CustomerId = 5;
+                order.EmployeeId = 5;
+                DateTime now = DateTime.Now;
+                //order.OrderDate = now;
+                //order.RequiredDate = now.AddDays(7);
+                order.Freight = 15.784;
+
+                _northwindContext.AddOrder(order);
+                return RedirectToAction("Index", "Home");
+            }
+            return View();      
         }
     }
 }
