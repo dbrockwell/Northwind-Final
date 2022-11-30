@@ -78,6 +78,8 @@ $(function () {
             success: function (response, textStatus, jqXhr) {
                 // success
                 toast("Product Added", response.product.productName + " successfully added to cart.");
+                // TODO: update cart count
+                getItemCount();
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 // log the error to the console

@@ -13,6 +13,7 @@ namespace Northwind.Models
         public DbSet<Customer> Customers { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<Shipper> Shippers { get; set; }
         public void AddCustomer(Customer customer)
         {
             Customers.Add(customer);
@@ -55,6 +56,18 @@ namespace Northwind.Models
             SaveChanges();
             cartItem.Product = Products.Find(cartItem.ProductId);
             return cartItem;
+        }
+        public void RemoveFromCart(int id)
+        {
+            CartItem cartItem = CartItems.FirstOrDefault(ci => ci.CartItemId == id);
+            CartItems.Remove(cartItem);
+            SaveChanges();
+        }
+        public void RemoveAllFromCart(int id)
+        {
+            var items = CartItems.Where(ci => ci.CustomerId == id).ToList();
+            CartItems.RemoveRange(items);
+            SaveChanges();
         }
         public void AddOrder(Order order)
         {

@@ -86,7 +86,10 @@ namespace Northwind.Controllers
         }
 
         [Authorize(Roles = "northwind-customer")]
-        public IActionResult Order() => View();
+        public IActionResult Order() {
+            ViewBag.Shippers = _northwindContext.Shippers.OrderBy(s => s.CompanyName);
+            return View();
+        }
 
         [Authorize(Roles = "northwind-customer")]
         [HttpPost, ValidateAntiForgeryToken]
@@ -94,14 +97,23 @@ namespace Northwind.Controllers
         {
             if (ModelState.IsValid)
             {
-                order.CustomerId = 5;
+                Customer customer = _northwindContext.Customers.FirstOrDefault(c => c.Email == User.Identity.Name);
+                // STEP 1: add to order table
+                order.CustomerId = customer.CustomerId;
                 order.EmployeeId = 5;
                 DateTime now = DateTime.Now;
-                //order.OrderDate = now;
-                //order.RequiredDate = now.AddDays(7);
-                order.Freight = 15.784;
+                order.OrderDate = now;
+                order.RequiredDate = now.AddDays(7);
+                order.Freight = 15.78;
 
-                _northwindContext.AddOrder(order);
+                //_northwindContext.AddOrder(order);
+
+                // TODO: Step 2: Add top Orderdetails table
+                
+
+                // Step 3: Remove from CartItems table
+                _northwindContext.RemoveAllFromCart(customer.CustomerId);
+
                 return RedirectToAction("Index", "Home");
             }
             return View();      

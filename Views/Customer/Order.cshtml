@@ -41,28 +41,28 @@
                     </div>
                 </div>
                 <div class="form-group col-md-6">
-                    <label asp-for="@Model.ShipVia">Ship Via</label> <br>
-                    <input asp-for="@Model.ShipVia" type="radio" name="shipVia" Value="1" /> Speedy Express <br> <br>
-                    <input asp-for="@Model.ShipVia" type="radio" name="shipVia" Value="2" /> United Package <br> <br>
-                    <input asp-for="@Model.ShipVia" type="radio" name="shipVia" Value="3" /> Federal Shipping <br> <br>
+                    <select class="form-control" name="shipVia">
+                        @foreach (var s in ViewBag.Shippers){
+                            <option value="@s.ShipperId">@s.CompanyName</option>
+                        }
+                    </select>
                 </div>
                 <br>
                 <button type="submit" class="btn btn-outline-primary">Place Order</button>
             </form>
         </div>
-        <div class="col-4">
-            <div class="card">
+        <!-- <div class="col-4">
+            <div id="cart-form" class="card">
                 <div class="card-header">
                     <strong>Cart</strong>
                 </div>
                 <div class="card-body">
-                    <div id="product_cart" class="list-group list-group-flush">
-                    </div>
+                    
                 </div>
                 <div class="card-footer">
                     Total: $<span id="product_cart_total"></span> &nbsp;
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </div>
