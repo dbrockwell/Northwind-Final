@@ -97,8 +97,8 @@ namespace Northwind.Controllers
                 order.CustomerId = 5;
                 order.EmployeeId = 5;
                 DateTime now = DateTime.Now;
-                //order.OrderDate = now;
-                //order.RequiredDate = now.AddDays(7);
+                order.OrderDate = now;
+                order.RequiredDate = now.AddDays(7);
                 order.Freight = 15.784;
 
                 _northwindContext.AddOrder(order);
