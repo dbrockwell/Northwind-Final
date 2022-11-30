@@ -76,6 +76,12 @@ body {
     /* Vertically center the text there */
 }
 
+.toast {
+    position: absolute;
+    top: 65px;
+    right: 10px;
+}
+
 .discontinued {
     opacity: .5;
   }
