@@ -37,12 +37,10 @@ namespace Northwind.Controllers
            return  _northwindContext.CartItems.Where(ci => ci.Customer.Email == email).Sum(ci => ci.Quantity);
         }
 
-        // [HttpGet, Route("api/cartitems/products")]
-        // public IEnumerable<CartItemDisplayJSON> CartProducts(){
-        //     var email = User.Identity.Name;
-        //     var Items = _northwindContext.CartItems.Where(ci => ci.Customer.Email == email).Select(c => new CartItemDisplayJSON { c.CartItemId, c.Product.ProductName, c.Quantity}).ToList();
-
-        //    return  Items;
-        // }
+        [HttpGet, Route("api/cartitems/products")]
+        public IEnumerable<CartItemDisplayJSON> CartProducts(){
+            var email = User.Identity.Name;
+            return _northwindContext.CartItems.Where(ci => ci.Customer.Email == email).Select(c => new CartItemDisplayJSON { id = c.CartItemId, name = c.Product.ProductName, qty = c.Quantity, price = c.Product.UnitPrice});
+        }
     }
 }

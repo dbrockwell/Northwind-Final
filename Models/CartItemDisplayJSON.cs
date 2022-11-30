@@ -7,5 +7,6 @@ namespace Northwind.Models
         public int id { get; set; }
         public string name { get; set; }
         public int qty { get; set; }
+        public decimal price { get; set; }
     }
 }
