@@ -9,7 +9,12 @@ $(function () {
                 $('#product_rows').html("");
                 for (var i = 0; i < response.length; i++){
                     var css = response[i].discontinued ? " class=\"discontinued\"" : "";
-                    var row = "<tr" + css + " data-id=\"" + response[i].productId + "\" data-name=\"" + response[i].productName + "\" data-price=\"" + response[i].unitPrice + "\">"
+                        if(response[i].discontinued && response[i].unitsInStock <= 0){
+                            css = " class=\"discontinued out-of-stock\"";
+                        }else if(!response[i].discontinued && response[i].unitsInStock <= 0){
+                            css = " class=\"out-of-stock\"";
+                        }
+                    var row = "<tr" + css + " data-id=\"" + response[i].productId + "\" data-name=\"" + response[i].productName + "\" data-price=\"" + response[i].unitPrice + "\" data-stock=\"" + response[i].unitsInStock + "\" >"
                         + "<td>" + response[i].productName + "</td>"
                         + "<td class=\"text-right\">$" + response[i].unitPrice.toFixed(2) + "</td>"
                         + "<td class=\"text-right\">" + response[i].unitsInStock + "</td>"
@@ -32,15 +37,21 @@ $(function () {
     });
     // delegated event listener
     $('#product_rows').on('click', 'tr', function(){
-        // make sure a customer is logged in
-        if ($('#User').data('customer').toLowerCase() == "true"){
+         // make sure a customer is logged in
+         if ($('#User').data('customer').toLowerCase() == "true"){
+            if($(this).hasClass('out-of-stock')){
+                toast("Out of stock", "This Product is out of stock");
+            }else{
             $('#ProductId').html($(this).data('id'));
             $('#ProductName').html($(this).data('name'));
             $('#UnitPrice').html($(this).data('price').toFixed(2));
             // calculate and display total in modal
+            $('#Quantity').val(1);
+            $('#Quantity').attr("max", $(this).data('stock'));
             $('#Quantity').change();
             $('#cartModal').modal();
-        } else {
+            }
+        }else {
             toast("Access Denied", "You must be signed in as a customer to access the cart.");
         }
     });
