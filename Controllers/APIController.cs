@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Northwind.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Northwind.Controllers
 {
@@ -29,5 +30,17 @@ namespace Northwind.Controllers
         [HttpPost, Route("api/addtocart")]
         // adds a row to the cartitem table
         public CartItem Post([FromBody] CartItemJSON cartItem) => _northwindContext.AddToCart(cartItem);
+
+        [HttpGet, Route("api/cartitems/count")]
+        public int CartItemCount(){
+            var email = User.Identity.Name;
+           return  _northwindContext.CartItems.Where(ci => ci.Customer.Email == email).Sum(ci => ci.Quantity);
+        }
+
+        [HttpGet, Route("api/cartitems/products")]
+        public IEnumerable<CartItemDisplayJSON> CartProducts(){
+            var email = User.Identity.Name;
+            return _northwindContext.CartItems.Where(ci => ci.Customer.Email == email).Select(c => new CartItemDisplayJSON { id = c.CartItemId, name = c.Product.ProductName, qty = c.Quantity, price = c.Product.UnitPrice});
+        }
     }
 }
