@@ -12,6 +12,7 @@ namespace Northwind.Models
         public DbSet<Discount> Discounts { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
+        public DbSet<Order> Orders { get; set; }
         public void AddCustomer(Customer customer)
         {
             Customers.Add(customer);
@@ -54,6 +55,11 @@ namespace Northwind.Models
             SaveChanges();
             cartItem.Product = Products.Find(cartItem.ProductId);
             return cartItem;
+        }
+        public void AddOrder(Order order)
+        {
+            Orders.Add(order);
+            SaveChanges();
         }
     }
 }
