@@ -4,6 +4,8 @@
 <ul class="list-group">
     @foreach (Discount d in Model)
     {
-        <li class="list-group-item">@d.Title - @d.Description</li>
+        <li class="list-group-item">
+            <strong>@d.Title</strong> - @d.Description | <strong>Expires: @d.EndTime.ToString("MM/dd/yyyy") - Code: @d.Code </strong>
+        </li>
     }
 </ul>
