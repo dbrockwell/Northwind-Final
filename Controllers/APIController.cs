@@ -42,5 +42,7 @@ namespace Northwind.Controllers
             var email = User.Identity.Name;
             return _northwindContext.CartItems.Where(ci => ci.Customer.Email == email).Select(c => new CartItemDisplayJSON { id = c.CartItemId, name = c.Product.ProductName, qty = c.Quantity, price = c.Product.UnitPrice});
         }
+        [HttpDelete, Route("api/removefromcart/{id}")]
+        public void RemoveFromCart(int id) => _northwindContext.RemoveFromCart(id);
     }
 }
