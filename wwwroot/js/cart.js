@@ -28,11 +28,11 @@ $(function() {
                     var productTotal = response[i].qty * response[i].price;
                     total += productTotal
                     var row =
-                        "<p class=\"list-group-item\"> <span id=\"product_info\" data-id=\"" + response[i].id + "\">" + response[i].name + "  -  $" + response[i].price + 
-                        " <span class=\"float-right\"> quantity: " + response[i].qty + " - <b>Total: $" + productTotal + "</b>&nbsp; &nbsp;<button data-id=\"" + response[i].id + "\" class=\"btn btn-outline-danger rounded-circle cartButton\"><i class=\"fas fa-trash\"></i></button>" + "</span></span></p>"
+                        "<p class=\"list-group-item\"> <span id=\"product_info\" data-id=\"" + response[i].id + "\">" + response[i].name + ":  $" + response[i].price.toFixed(2) + 
+                        " <span class=\"float-right\"> quantity: " + response[i].qty + " - <b>Total: $" + productTotal.toFixed(2) + "</b>&nbsp; &nbsp;<button data-id=\"" + response[i].id + "\" class=\"btn btn-outline-danger rounded-circle cartButton\"><i class=\"fas fa-trash\"></i></button>" + "</span></span></p>"
                     $('#product_cart').append(row);
                 }
-                $("#product_cart_total").html(total)
+                $("#product_cart_total").html(total.toFixed(2))
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log("The following error occured: " + textStatus, errorThrown);
