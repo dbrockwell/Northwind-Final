@@ -106,13 +106,16 @@ namespace Northwind.Controllers
                 order.RequiredDate = now.AddDays(7);
                 order.Freight = 15.78;
 
-                //_northwindContext.AddOrder(order);
+                _northwindContext.AddOrder(order, customer.CustomerId);
 
                 // TODO: Step 2: Add top Orderdetails table
+                // var CartItems = _northwindContext.CartItems.Where(ci => ci.CustomerId == customer.CustomerId).ToList();
+                // OrderDetail od = new OrderDetail();
+                // od.ProductId
                 
 
                 // Step 3: Remove from CartItems table
-                _northwindContext.RemoveAllFromCart(customer.CustomerId);
+                // _northwindContext.RemoveAllFromCart(customer.CustomerId, );
 
                 return RedirectToAction("Index", "Home");
             }

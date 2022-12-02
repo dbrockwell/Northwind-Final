@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Northwind.Models
 {
@@ -13,6 +14,7 @@ namespace Northwind.Models
         public DbSet<Customer> Customers { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Shipper> Shippers { get; set; }
         public void AddCustomer(Customer customer)
         {
@@ -63,15 +65,34 @@ namespace Northwind.Models
             CartItems.Remove(cartItem);
             SaveChanges();
         }
-        public void RemoveAllFromCart(int id)
+        // public void RemoveAllFromCart(int id)
+        // {
+        //     var items = CartItems.Where(ci => ci.CustomerId == id).ToList();
+        //     CartItems.RemoveRange(items);
+
+        //     SaveChanges();
+        // }
+        public void AddOrder(Order order, int id)
         {
-            var items = CartItems.Where(ci => ci.CustomerId == id).ToList();
-            CartItems.RemoveRange(items);
-            SaveChanges();
-        }
-        public void AddOrder(Order order)
-        {
+            // STEP 1: Add to order table
             Orders.Add(order);
+            SaveChanges();
+            // STEP 2: Add to OrderDetail table
+            var items = CartItems.Where(ci => ci.CustomerId == id).ToList();
+            List<OrderDetail> orderDetails = new List<OrderDetail>();
+            foreach(var item in items){
+                OrderDetail od = new OrderDetail();
+                od.OrderId = order.OrderId;
+                od.ProductId = item.ProductId;
+                od.UnitPrice = Products.FirstOrDefault(p => p.ProductId == item.ProductId).UnitPrice;
+                od.Quantity = item.Quantity;
+                od.Discount = 0;
+                orderDetails.Add(od);
+            }
+            OrderDetails.AddRange(orderDetails);
+            // Step 3: Remove from CartItems table
+            CartItems.RemoveRange(items);
+
             SaveChanges();
         }
     }
